@@ -6,17 +6,22 @@ export const getCommentsBy = async (req, res) => {
 }
 
 export const createTask = async (req, res) => {
-    const { authorName, text, date, taskId } = req.body;
+    try {
+        const { authorName, text, date, taskId, user } = req.body;
 
-    const newComment = new Comment({
-        user: req.user.id,
-        authorName,
-        text,
-        date,
-        taskId: taskId
-    });
-    const savedComment = await newComment.save();
+        const newComment = new Comment({
+            user: user,
+            authorName,
+            text,
+            date,
+            taskId: taskId
+        });
+        const savedComment = await newComment.save();
     res.json(savedComment);
+    } catch (error) {
+        console.error(error);
+    }
+    
 }
 
 export const deleteTask = async (req, res) => {
