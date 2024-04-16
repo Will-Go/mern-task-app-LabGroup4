@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import {
   getCommentsRequestBy,
+  getCommentRequestBy,
   createCommentRequest,
   updateCommentRequest,
   deleteCommentRequest,
@@ -35,6 +36,13 @@ function CommentsProvider({ children }) {
       setComments(res.data);
     } catch (error) {}
   };
+  const getCommentBy = async (id) => {
+    try {
+      const res = await getCommentRequestBy(id);
+      console.log(res);
+      return res.data;
+    } catch (error) {}
+  };
 
   const deleteComment = async (id) => {
     try {
@@ -64,6 +72,7 @@ function CommentsProvider({ children }) {
         getCommentsBy,
         deleteComment,
         updateComment,
+        getCommentBy,
       }}>
       {children}
     </CommentContext.Provider>

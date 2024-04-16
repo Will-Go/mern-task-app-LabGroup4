@@ -19,7 +19,7 @@ function CommentCard({ comment }) {
             {" "}
             Delete{" "}
           </button>
-          <Link to={`/editComments/${comment._id}`}> Edit</Link>
+          <Link to={`/editComment/${comment._id}`}> Edit</Link>
         </div>
       </header>
     </div>

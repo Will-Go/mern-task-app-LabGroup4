@@ -1,28 +1,34 @@
 import { useForm } from "react-hook-form";
-import { useTasks } from "../context/TasksContext";
+
+import { useComments } from "../context/CommentsContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function TaskFormPage() {
   const { register, handleSubmit, setValue } = useForm();
-  const { createTask, getTask, updateTask } = useTasks();
+  const { getCommentBy, updateComment } = useComments();
+
+  const [commentData, setCommentData] = useState({});
   const navigate = useNavigate();
   const params = useParams();
   const onSubmit = handleSubmit(async (data) => {
     if (params.id) {
-      await updateTask(params.id, data);
-    } else {
-      await createTask(data);
+      console.log(data);
+      await updateComment(params.id, data);
     }
-    navigate("/tasks");
+
+    setTimeout(() => {
+      navigate(`/comments/${commentData.taskId}`);
+    }, 2000);
   });
 
   useEffect(() => {
     async function loadTask() {
       if (params.id) {
-        const task = await getTask(params.id);
-        setValue("title", task.title);
-        setValue("description", task.description);
+        const comment = await getCommentBy(params.id);
+        console.log(comment);
+        setCommentData(comment);
+        setValue("text", comment.text);
       }
     }
     loadTask();
@@ -31,17 +37,11 @@ function TaskFormPage() {
   return (
     <div className="bg-zinc-800 max-w-md w-full p-10 rounded-md">
       <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-          placeholder="Title"
-          {...register("title")}
-          autoFocus></input>
         <textarea
           rows="3"
           className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2"
-          placeholder="Description"
-          {...register("description")}></textarea>
+          placeholder="Comentario"
+          {...register("text")}></textarea>
         <button>Save</button>
       </form>
     </div>

@@ -27,7 +27,8 @@ function CommentsPage() {
       };
 
       const resComment = await createComment(comment);
-      setComments((prev) => [...prev, { ...comment }]);
+      console.log(resComment);
+      setComments((prev) => [...prev, { ...resComment.data }]);
       setValue("text", "");
     } else {
       alert("Necesitas estar logueado para comentar");
